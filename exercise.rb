@@ -59,7 +59,7 @@ class Exercise
         index += 1
         index_difference = 0
     end
-    # here is where the program gets ugly but for the sake of saving n+1 rather than 2n computations we will manually perform the last case
+    # here is where the program gets ugly but for the sake of having the operation use n+1 rather than 2n computations we will manually perform the last case
     index -= 1
     curr_word_length = index - index_start + 1
     # check if the word ends in any of our pre-defined end_marks
@@ -99,6 +99,24 @@ class Exercise
   # and the sum of its even numbers is (2 + 8) = 10
   def self.even_fibonacci(nth)
     # TODO: Implement this method
+    # idea: keep space to 3 variables reducing cost of space to O(1), keep fibonacci linear O(n)
+    # future: use ALU logic to bypass integer max & min by adding strings
+    even = 0
+    odd = 1
+    sum = 0
+    placeholder = 0
+    if nth < 2
+        return sum
+    else
+        for i in 1..nth
+            placeholder = odd
+            odd = even + odd
+            even = placeholder
+            if even % 2 == 0
+               sum += even
+            end
+        end
+        return sum
+    end
   end
-
 end
