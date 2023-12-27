@@ -101,19 +101,19 @@ class Exercise
     # TODO: Implement this method
     # idea: keep space to 3 variables reducing cost of space to O(1), keep fibonacci linear O(n)
     # future: use ALU logic to bypass integer max & min by adding strings
-    even = 0
-    odd = 1
+    nth_position = 0
+    nthplusone_position = 1
     sum = 0
     placeholder = 0
     if nth < 2
         return sum
     else
         for i in 1..nth
-            placeholder = odd
-            odd = even + odd
-            even = placeholder
-            if even % 2 == 0
-               sum += even
+            placeholder = nthplusone_position
+            nthplusone_position = nth_position + nthplusone_position
+            nth_position = placeholder
+            if nth_position % 2 == 0
+               sum += nth_position
             end
         end
         return sum
