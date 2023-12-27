@@ -5,6 +5,92 @@ class Exercise
   # If the word being replaced has a capital first letter, it should instead be replaced with "Marklar".
   def self.marklar(str)
     # TODO: Implement this method
+    # idea : modify argument to save space and require no additional space by using index pointers
+    # idea : only modify str when its size has changed (to save on costly resizing)
+    # future : could optimize code further by leaving end_marks in replace
+
+
+    marklar_threshold = 5
+    marklar_word = "marklar"
+    marklar_capital_word = "Marklar"
+    end_marks = ["?",",",".","!"]
+    end_mark = ""
+    index = 0
+    index_start = 0
+    index_difference = 0
+    curr_word = ""
+
+
+    while index < str.length
+        if str[index] == " "
+            # here we find the length of current word we want to check
+            curr_word_length = index - index_start
+            # check if the word ends in any of our pre-defined end_marks
+            end_marks.each do |end_index|
+                if str[index-1] == end_index
+                    end_mark = end_index
+                    curr_word_length = index - index_start - 1
+                    break
+                end
+            end
+            # if the word - end mark is longer than our threshold we will modify the str string
+            if curr_word_length >= marklar_threshold
+                index_difference = marklar_word.length - curr_word_length
+                if index_difference != 0
+                    # here we have expensive array resizing of main str to fit our new str
+                    if index_difference > 0
+                        str = str[0..index-1] + (" "*index_difference) + str[index..-1]
+                    else
+                        str = str[0..index_start] + str[(index+ index_difference -1)..-1]
+                    end
+                end
+                index = index + index_difference
+                # case word starts with capital
+                if str[index_start].match(/[A-Z]/) != nil
+                    str[index_start...index] = marklar_capital_word + end_mark
+                # case word does not start with capital
+                else
+                    str[index_start...index] = marklar_word + end_mark
+                end
+            end
+            index_start = index+1
+            end_mark = ""
+        end
+        index += 1
+        index_difference = 0
+    end
+    # here is where the program gets ugly but for the sake of saving n+1 rather than 2n computations we will manually perform the last case
+    index -= 1
+    curr_word_length = index - index_start + 1
+    # check if the word ends in any of our pre-defined end_marks
+    end_marks.each do |end_index|
+        if str[index] == end_index
+            end_mark = end_index
+            curr_word_length = index - index_start
+            break
+        end
+    end
+    # if the word - end mark is longer than our threshold we will modify the str string
+    if curr_word_length >= marklar_threshold
+        index_difference = marklar_word.length - curr_word_length
+        if index_difference != 0
+            # here we have expensive array resizing of main str to fit our new str
+            if index_difference > 0
+                str = str[0..index-1]+ str[index..-1]+ (" "*index_difference)
+            else
+                str = str[0..index_start] + str[(index+ index_difference)..-1]
+            end
+        end
+        index = index + index_difference
+        # case word starts with capital
+        if str[index_start].match(/[A-Z]/) != nil
+            str[index_start...index+1] = marklar_capital_word+end_mark
+        # case word does not start with capital
+        else
+            str[index_start...index+1] = marklar_word+end_mark
+        end
+    end
+    return str
   end
 
   # Return the sum of all even numbers in the Fibonacci sequence, up to
