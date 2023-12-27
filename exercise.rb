@@ -52,12 +52,12 @@ class Exercise
                 else
                     str[index_start...index] = marklar_word + end_mark
                 end
+                index_difference = 0
+                end_mark = ""
             end
             index_start = index+1
-            end_mark = ""
         end
         index += 1
-        index_difference = 0
     end
     # here is where the program gets ugly but for the sake of having the operation use n+1 rather than 2n computations we will manually perform the last case
     index -= 1
